@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parking Slot Management</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #85ebd8;
+      padding: 2rem;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #007BFF;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .receipt {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #eaf4ff;
+      border-left: 5px solid #007BFF;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Parking Slot System</h1>
+
+    <label for="customer">Customer Name:</label>
+    <input type="text" id="customer" placeholder="Enter customer name">
+
+    <label for="duration">Parking Duration (minutes):</label>
+    <input type="number" id="duration" min="1" max="180">
+
+    <button onclick="generateReceipt()">Generate Ticket</button>
+
+    <div id="receipt" class="receipt" style="display: none;"></div>
+  </div>
+
+  <script>
+    function generateReceipt() {
+      const name = document.getElementById('customer').value;
+      const duration = parseInt(document.getElementById('duration').value);
+
+      if (!name || isNaN(duration)) {
+        alert("Please enter both name and valid duration.");
+        return;
+      }
+
+      const now = new Date();
+      const receiptId = 'TICKET-' + Math.floor(Math.random() * 90000 + 10000);
+      const fine = duration > 30 ? (duration - 30) * 10 : 0;
+
+      const html = `
+        <strong>Receipt ID:</strong> ${receiptId}<br>
+        <strong>Customer:</strong> ${name}<br>
+        <strong>Issued At:</strong> ${now.toLocaleTimeString()}<br>
+        <strong>Parking Duration:</strong> ${duration} minutes<br>
+        <strong>Status:</strong> ${duration > 30 ? 'Overtime' : 'Within Limit'}<br>
+        <strong>Fine:</strong> ₹${fine}
+      `;
+
+      const receiptDiv = document.getElementById("receipt");
+      receiptDiv.innerHTML = html;
+      receiptDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
